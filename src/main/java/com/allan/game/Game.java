@@ -12,10 +12,14 @@ public class Game {
 	public Game(Player playerWhite, Player playerBlack) {
 		this.playerBlack = playerBlack;
 		this.playerWhite = playerWhite;
+		this.board = new Board(this.playerWhite, this.playerBlack);
+		playerBlack.setPieces(this.board.deployBlack());
+		playerWhite.setPieces(this.board.deployWhite());
+		board.sendBoardSnapshotToPlayers();
 	}
 	
 	public boolean isFinished() {
-		return false;
+		return true;
 	}
 	
 	public Player winner() {
@@ -24,6 +28,10 @@ public class Game {
 	
 	public Board getBoard() {
 		return board;
+	}
+	
+	public void checkWarnings() {
+		
 	}
 	
 }

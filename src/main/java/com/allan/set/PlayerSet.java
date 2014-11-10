@@ -6,29 +6,59 @@ import com.allan.piece.Knight;
 import com.allan.piece.Pawn;
 import com.allan.piece.Queen;
 import com.allan.piece.Rook;
+import com.allan.player.Player;
 
 public class PlayerSet {
 	
-	public Rook rook_1;
-	public Rook rook_2;
+	private boolean whitePlayer;
 	
-	public Knight knight_1;
-	public Knight knight_2;
+	public Rook rook_1 = new Rook(this);
+	public Rook rook_2 = new Rook(this);
 	
-	public Bishop bishop_1;
-	public Bishop bishop_2;
+	public Knight knight_1 = new Knight(this);
+	public Knight knight_2 = new Knight(this);
 	
-	public King king;
+	public Bishop bishop_1 = new Bishop(this);
+	public Bishop bishop_2 = new Bishop(this);
 	
-	public Queen queen;
+	public King king = new King(this);
 	
-	public Pawn pawn_1;
-	public Pawn pawn_2;
-	public Pawn pawn_3;
-	public Pawn pawn_4;
-	public Pawn pawn_5;
-	public Pawn pawn_6;
-	public Pawn pawn_7;
-	public Pawn pawn_8;
+	public Queen queen = new Queen(this);
+	
+	public Pawn pawn_1 = new Pawn(this);
+	public Pawn pawn_2 = new Pawn(this);
+	public Pawn pawn_3 = new Pawn(this);
+	public Pawn pawn_4 = new Pawn(this);
+	public Pawn pawn_5 = new Pawn(this);
+	public Pawn pawn_6 = new Pawn(this);
+	public Pawn pawn_7 = new Pawn(this);
+	public Pawn pawn_8 = new Pawn(this);
+	
+	private Player player;
+	
+	public PlayerSet(Player player) {
+		this.player = player;
+	}
+	
+	public Player getPlayer() {
+		return this.player;
+	}
+	
+	public boolean isWhitePlayer() {
+		return whitePlayer;
+	}
+	
+	public void setWhitePlayer(boolean isWhitePlayer) {
+		this.whitePlayer = isWhitePlayer;
+		pawn_1.setMovesUp(isWhitePlayer);
+		pawn_2.setMovesUp(isWhitePlayer);
+		pawn_3.setMovesUp(isWhitePlayer);
+		//TODO: change here
+		pawn_1.setMovesUp(isWhitePlayer);
+		pawn_1.setMovesUp(isWhitePlayer);
+		pawn_1.setMovesUp(isWhitePlayer);
+		pawn_1.setMovesUp(isWhitePlayer);
+		pawn_1.setMovesUp(isWhitePlayer);
+	}
 	
 }
