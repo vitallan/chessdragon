@@ -5,11 +5,14 @@ import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.Color.WHITE;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 
+import java.util.List;
+
 import org.fusesource.jansi.Ansi.Color;
 
 import com.allan.exception.IllegalMoveException;
 import com.allan.player.Player;
 import com.allan.set.BoardProxy;
+import com.allan.set.Move;
 import com.allan.set.PlayerSet;
 import com.allan.set.Position;
 
@@ -26,21 +29,33 @@ public class Board {
 	
 	public PlayerSet deployWhite() {
 		PlayerSet pieces = this.deployWhitePieces();
+		pieces.setWhitePlayer(true);
 		return pieces;
 	}
 
 	public PlayerSet deployBlack() {
 		PlayerSet pieces = this.deployBlackPieces();
+		pieces.setWhitePlayer(false);
 		return pieces;
 	}
 
-	public void movePiece(Piece piece, Position nextPosition) throws IllegalMoveException {
+	public void move(Move move) throws IllegalMoveException {
+		Piece piece = move.getPiece();
+		Position nextPosition = move.getFuturePosition();
+		Position currentPosition = piece.getPosition();
 		if (!piece.getPossibleMoves(this.realBoard).contains(nextPosition)) {
-			throw new IllegalMoveException("[ " + piece.getAbbreviation() + " in " + piece.getPosition() + "] Cant go to " + nextPosition );
+			throw new IllegalMoveException("[ " + piece.getAbbreviation() + " in " + currentPosition + "] Cant go to " + nextPosition );
 		}
+		realBoard[currentPosition.getI()][currentPosition.getJ()] = null;
 		piece.setPosition(nextPosition); //just to make sure
+		if (this.realBoard[nextPosition.getI()][nextPosition.getJ()] != null) {
+			Piece deadPiece = this.realBoard[nextPosition.getI()][nextPosition.getJ()];
+			deadPiece.setPosition(null);
+			deadPiece = null;
+		}
 		this.setPieceInBoard(piece);
 		this.sendBoardSnapshotToPlayers();
+		piece.setFirstMove(false);
 	}
 
 	public void sendBoardSnapshotToPlayers() {
@@ -80,26 +95,10 @@ public class Board {
 	}
 	
 	private void setPlayerSetInBoard(PlayerSet set) {
-		/*this.setPieceInBoard(set.pawn_1);
-		this.setPieceInBoard(set.pawn_2);
-		this.setPieceInBoard(set.pawn_3);
-		this.setPieceInBoard(set.pawn_4);
-		this.setPieceInBoard(set.pawn_5);
-		this.setPieceInBoard(set.pawn_6);
-		this.setPieceInBoard(set.pawn_7);
-		this.setPieceInBoard(set.pawn_8);*/
-		
-		this.setPieceInBoard(set.rook_1);
-		this.setPieceInBoard(set.rook_2);
-		
-		this.setPieceInBoard(set.knight_1);
-		this.setPieceInBoard(set.knight_2);
-		
-		this.setPieceInBoard(set.bishop_1);
-		this.setPieceInBoard(set.bishop_2);
-		
-		this.setPieceInBoard(set.king);
-		this.setPieceInBoard(set.queen);
+		List<Piece> playerPieces = set.getPiecesAsList();
+		for (Piece piece : playerPieces) {
+			this.setPieceInBoard(piece);
+		}
 	}
 	
 	private void setPieceInBoard(Piece piece) {
@@ -109,7 +108,6 @@ public class Board {
 	
 	private PlayerSet deployWhitePieces() {
 		PlayerSet set = new PlayerSet(whitePlayer);
-		set.setWhitePlayer(true);
 		
 		set.pawn_1.setPosition(Position.A2);
 		set.pawn_2.setPosition(Position.B2);
@@ -139,7 +137,6 @@ public class Board {
 
 	private PlayerSet deployBlackPieces() {
 		PlayerSet set = new PlayerSet(blackPlayer);
-		set.setWhitePlayer(false);
 		
 		set.pawn_1.setPosition(Position.A7);
 		set.pawn_2.setPosition(Position.B7);
