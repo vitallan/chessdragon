@@ -42,7 +42,7 @@ public abstract class Piece {
 		return this.value;
 	}
 	
-	protected void setPosition(Position position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 	

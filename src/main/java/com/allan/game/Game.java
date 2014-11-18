@@ -6,16 +6,8 @@ public class Game {
 
 	private Board board;
 	
-	private Player playerWhite;
-	private Player playerBlack;
-	
 	public Game(Player playerWhite, Player playerBlack) {
-		this.playerBlack = playerBlack;
-		this.playerWhite = playerWhite;
-		this.board = new Board(this.playerWhite, this.playerBlack);
-		playerBlack.setPieces(this.board.deployBlack());
-		playerWhite.setPieces(this.board.deployWhite());
-		board.sendBoardSnapshotToPlayers();
+		this.board = new Board(playerWhite, playerBlack);
 	}
 	
 	public boolean isFinished() {
@@ -23,7 +15,7 @@ public class Game {
 	}
 	
 	public Player winner() {
-		return playerWhite;
+		return null;
 	}
 	
 	public Board getBoard() {
