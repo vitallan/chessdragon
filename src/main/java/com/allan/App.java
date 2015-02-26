@@ -10,6 +10,7 @@ import com.allan.player.PlayerZero;
 public class App 
 {
     public static void main( String[] args ) throws IllegalMoveException {
+    	//TODO: refactor this: this logic should be in Game.java and better written
     	AnsiConsole.systemInstall();
     	Player[] array = new Player[2];
     	array[0] = new PlayerZero();
@@ -25,5 +26,6 @@ public class App
         	i++;
         }
         AnsiConsole.systemUninstall();
-    }
+    } 
+	
 }

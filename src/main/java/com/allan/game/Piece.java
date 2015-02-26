@@ -14,7 +14,7 @@ public abstract class Piece {
 	private int BORDER_LIMIT = 8;
 	private boolean firstMove = true;
 	
-	protected abstract String getAbbreviation();
+	public abstract String getAbbreviation();
 	public abstract List<Position> getPossibleMoves(Piece[][] board);
 	
 	public boolean getFirstMove() {

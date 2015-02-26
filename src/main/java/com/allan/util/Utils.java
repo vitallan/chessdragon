@@ -5,10 +5,14 @@ import static org.fusesource.jansi.Ansi.Color.RED;
 import static org.fusesource.jansi.Ansi.Color.WHITE;
 import static org.fusesource.jansi.Ansi.Color.YELLOW;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.fusesource.jansi.Ansi.Color;
 
 import com.allan.game.Piece;
 import com.allan.player.Player;
+import com.allan.set.Move;
 import com.allan.set.PlayerSet;
 import com.allan.set.Position;
 
@@ -18,19 +22,27 @@ public class Utils {
 		for (int i = 0; i < realBoard.length; i++) {
 			System.out.print("[ ");
 			for (int j = 0; j < realBoard[i].length; j++) {
-				if (!(realBoard[i][j] == null)) {
-					Color color;
-					if (getPlayerOwner(i,j, realBoard).equals(whitePlayer)) {
-						color = WHITE;
-					} else {
-						color = YELLOW;
-					}
-					System.out.print(ansi().fg(color).a(realBoard[i][j]).reset() + " ");
-				} else {
-					System.out.print(ansi().fg(RED).a("(" + Position.getByPosition(i, j) + ") ").reset());
-				}
+				printPiece(realBoard, i, j, whitePlayer);
+				System.out.print("(" + i + "-" + j + ")");
 			}
 			System.out.print("]\n");
+		}
+	}
+	
+	private static void printPiece(Piece[][] realBoard, int i, int j, Player whitePlayer) {
+		if (!(realBoard[i][j] == null)) {
+			Color color;
+			String player;
+			if (getPlayerOwner(i,j, realBoard).equals(whitePlayer)) {
+				color = WHITE;
+				player = "W";
+			} else {
+				player = "B";
+				color = YELLOW;
+			}
+			System.out.print(player + "|" + ansi().fg(color).a(realBoard[i][j]).reset() + " ");
+		} else {
+			System.out.print(ansi().fg(RED).a("( " + Position.getByPosition(i, j) + " ) ").reset());
 		}
 	}
 	
@@ -41,12 +53,68 @@ public class Utils {
 		return null;
 	}
 	
-	public static boolean isKingInCheck(PlayerSet justMoved, PlayerSet isInCheck, Piece[][] realBoard) {
-		return false;
+	public static List<Piece> isKingInCheck(PlayerSet justMoved, PlayerSet isInCheck, Piece[][] realBoard) {
+		List<Move> nextPossibleMoves = justMoved.getAllPossibleMoves(realBoard);
+		List<Piece> checkPieces = new ArrayList<Piece>();
+		for (Move move : nextPossibleMoves) {
+			if (move.getFuturePosition().equals(isInCheck.king.getPosition())) {
+				checkPieces.add(move.getPiece());
+			}
+		}
+		return checkPieces;
 	}
 	
 	public static boolean isKingInCheckMate(PlayerSet justMoved, PlayerSet isInCheck, Piece[][] realBoard) {
-		return false;
+		List<Piece> menacingPieces = isKingInCheck(justMoved, isInCheck, realBoard);
+		if (menacingPieces.isEmpty()) {
+			return false;
+		}
+		// WIP in here, this method will be refactored soon
+		//check if king can move to safety
+		List<Position> possibleKingPositions = isInCheck.king.getPossibleMoves(realBoard);
+		for (Position position : possibleKingPositions) {
+			boolean canIMoveThere = true;
+			List<Position> agressivePositions = justMoved.getAllPossiblePositions(realBoard);
+			for (Position agressivePosition : agressivePositions) {
+				if (agressivePosition.equals(position)) {
+					canIMoveThere = false;
+					break;
+				}
+			}
+			if (canIMoveThere) {
+				return false;
+			}
+		}
+		List<Position> possibleMoves = isInCheck.getAllPossiblePositions(realBoard);
+		// check if i can capture the attacking piece, if there is only one menacing me
+		if (menacingPieces.size() == 1) {
+			Piece agressivePiece = menacingPieces.get(0);
+			Position toCapture = agressivePiece.getPosition();
+			if (possibleMoves.contains(toCapture)) {
+				return false;
+			}
+		}
+		
+		// check if i can block the attacking piece (using, sadly, brute force right now)
+		for (Piece piece : menacingPieces) {
+			if (piece.getAbbreviation() == "Q" || piece.getAbbreviation() == "R" || piece.getAbbreviation() == "B") {
+				//shit, it stinks
+				canItBeBlocked(piece, possibleMoves,realBoard, isInCheck.king.getPosition());
+			}
+		}
+		return true;
+	}
+	
+	private static void canItBeBlocked(Piece piece, List<Position> myMoves, Piece[][] board, Position kingPosition) {
+		int kingI = kingPosition.getI();
+		int kingJ = kingPosition.getJ();
+		
+		int agressorI = piece.getPosition().getI();
+		int agressorJ = piece.getPosition().getJ();
+		if (piece.getAbbreviation() == "R") {
+			//GOD DAMN IT I WILL GO BACK HERE WHEN I CAN 
+			// GOSH, WAS IT SUPOSED TO BE THIS MOTHERFUCKING HARD?
+		}
 	}
 	
 	public static void setPiecesPosition(Position[] positions, PlayerSet set) {

@@ -81,6 +81,27 @@ public class PlayerSet {
 		}
 		return null;
 	}
+	
+	public List<Move> getAllPossibleMoves(Piece[][] board) {
+		List<Move> moves = new ArrayList<Move>();
+		List<Piece> pieces = this.getPiecesAsList();
+		for (Piece piece : pieces) {
+			for (Position position : piece.getPossibleMoves(board)) {
+				Move move = new Move(piece, position);
+				moves.add(move);
+			}
+		}
+		return moves;
+	}
+	
+	public List<Position> getAllPossiblePositions(Piece[][] board) {
+		List<Position> positions = new ArrayList<Position>();
+		List<Piece> pieces = this.getPiecesAsList();
+		for (Piece piece : pieces) {
+			positions.addAll(piece.getPossibleMoves(board));
+		}
+		return positions;
+	}
 
 	public List<Piece> getPiecesAsList() {
 		List<Piece> piecesList = new ArrayList<Piece>();
