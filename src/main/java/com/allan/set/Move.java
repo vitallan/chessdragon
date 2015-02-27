@@ -20,4 +20,9 @@ public class Move {
 		return this.futurePosition;
 	}
 	
+	@Override
+	public String toString() {
+		return piece.getAbbreviation() + "-" + futurePosition;
+	}
+	
 }	

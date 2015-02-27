@@ -95,26 +95,28 @@ public class Utils {
 			}
 		}
 		
-		// check if i can block the attacking piece (using, sadly, brute force right now)
-		for (Piece piece : menacingPieces) {
-			if (piece.getAbbreviation() == "Q" || piece.getAbbreviation() == "R" || piece.getAbbreviation() == "B") {
-				//shit, it stinks
-				canItBeBlocked(piece, possibleMoves,realBoard, isInCheck.king.getPosition());
-			}
+		// check if i can block the attacking piece(s) (using, sadly, brute force right now)
+		Move move = canItBeBlocked(justMoved, isInCheck, realBoard);
+		if (move != null) {
+			return false;
 		}
 		return true;
 	}
 	
-	private static void canItBeBlocked(Piece piece, List<Position> myMoves, Piece[][] board, Position kingPosition) {
-		int kingI = kingPosition.getI();
-		int kingJ = kingPosition.getJ();
-		
-		int agressorI = piece.getPosition().getI();
-		int agressorJ = piece.getPosition().getJ();
-		if (piece.getAbbreviation() == "R") {
-			//GOD DAMN IT I WILL GO BACK HERE WHEN I CAN 
-			// GOSH, WAS IT SUPOSED TO BE THIS MOTHERFUCKING HARD?
+	private static Move canItBeBlocked(PlayerSet justMoved, PlayerSet isInCheck, Piece[][] board) {
+		List<Move> myMoves = isInCheck.getAllPossibleMoves(board);
+		Piece[][] tempBoard = board.clone();
+		for (Move move : myMoves) {
+			Piece piece = move.getPiece();
+			tempBoard[piece.getPosition().getI()][piece.getPosition().getJ()] = null;
+			tempBoard[move.getFuturePosition().getI()][move.getFuturePosition().getJ()] = move.getPiece();
+			if (isKingInCheck(justMoved, isInCheck, tempBoard).isEmpty()) {
+				return move;
+			}
+			tempBoard[move.getFuturePosition().getI()][move.getFuturePosition().getJ()] = null;
+			tempBoard[piece.getPosition().getI()][piece.getPosition().getJ()] = move.getPiece();
 		}
+		return null;
 	}
 	
 	public static void setPiecesPosition(Position[] positions, PlayerSet set) {

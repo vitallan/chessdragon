@@ -85,7 +85,11 @@ public class PlayerSet {
 	public List<Move> getAllPossibleMoves(Piece[][] board) {
 		List<Move> moves = new ArrayList<Move>();
 		List<Piece> pieces = this.getPiecesAsList();
-		for (Piece piece : pieces) {
+		for (int i = 0; i < pieces.size(); i++) {
+			Piece piece = pieces.get(i);
+			if (piece.getPosition() == null) {
+				continue;
+			}
 			for (Position position : piece.getPossibleMoves(board)) {
 				Move move = new Move(piece, position);
 				moves.add(move);
@@ -97,7 +101,11 @@ public class PlayerSet {
 	public List<Position> getAllPossiblePositions(Piece[][] board) {
 		List<Position> positions = new ArrayList<Position>();
 		List<Piece> pieces = this.getPiecesAsList();
-		for (Piece piece : pieces) {
+		for (int i = 0; i < pieces.size(); i++) {
+			Piece piece = pieces.get(i);
+			if (piece.getPosition() == null) {
+				continue;
+			}
 			positions.addAll(piece.getPossibleMoves(board));
 		}
 		return positions;
