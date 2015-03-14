@@ -19,7 +19,7 @@ public class App
         int i = 2;
         game.getBoard().printBoard();
         while(i < 10) {
-        	game.getBoard().move(array[i%2].move());
+        	game.getBoard().move(array[i%2].move(game.getBoard().getRealBoard()));
         	game.checkWarnings();
         	System.out.println("\n\n");
         	game.getBoard().printBoard();

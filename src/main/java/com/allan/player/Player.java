@@ -1,14 +1,15 @@
 package com.allan.player;
 
-import com.allan.set.BoardProxy;
+import java.util.List;
+
+import com.allan.game.Piece;
 import com.allan.set.Move;
-import com.allan.set.PlayerSet;
 
 
 public interface Player {
 	
-	void setPieces(PlayerSet set);
-	Move move();
-	void setBoard(BoardProxy board);
+	void setPieces(List<Piece> pieces);
+	Move move(Piece[][] board);
+	boolean isInMyPieces(Piece piece);
 	
 }

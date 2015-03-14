@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.allan.game.Piece;
-import com.allan.set.PlayerSet;
+import com.allan.player.Player;
 import com.allan.set.Position;
 
 public class Rook extends Piece {
-	
-	public Rook(PlayerSet set) {
-		super(5, set);
+
+	public Rook(Position position, Player player) {
+		super(position, player);
 	}
 	
 	@Override

@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.allan.game.Piece;
-import com.allan.set.PlayerSet;
+import com.allan.player.Player;
 import com.allan.set.Position;
 
 public class Pawn extends Piece {
 
-	private boolean movesUp;
-
-	public Pawn(PlayerSet set) {
-		super(1, set);
+	public Pawn(Position position, Player player) {
+		super(position, player);
 	}
+	
+	private boolean movesUp;
 
 	public void setMovesUp(boolean movesUp) {
 		this.movesUp = movesUp;

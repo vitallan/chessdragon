@@ -4,28 +4,24 @@ import java.util.List;
 import java.util.Random;
 
 import com.allan.game.Piece;
-import com.allan.set.BoardProxy;
 import com.allan.set.Move;
-import com.allan.set.PlayerSet;
 import com.allan.set.Position;
 
 public class PlayerZero implements Player {
 
-	private PlayerSet set;
-	private BoardProxy board;
+	private List<Piece> set;
 	
-	public void setPieces(PlayerSet set) {
+	public void setPieces(List<Piece> set) {
 		this.set = set;
 	}
 
-	public Move move() {
-		List<Piece> pieces = this.set.getPiecesAsList();
+	public Move move(Piece[][] board) {
 		boolean canMove = false;
 		Piece pieceToMove = null;
 		List<Position> positionsToGo = null;
 		while (!canMove) {
-			pieceToMove = pieces.get(this.getRandomIndex(pieces.size()));
-			positionsToGo = pieceToMove.getPossibleMoves(this.board.getBoardSnapshot());
+			pieceToMove = set.get(this.getRandomIndex(set.size()));
+			positionsToGo = pieceToMove.getPossibleMoves(board);
 			if (positionsToGo.size() > 0) {
 				canMove = true;
 			}
@@ -34,16 +30,17 @@ public class PlayerZero implements Player {
 		return new Move(pieceToMove, positionToGo);
 	}
 
-	@Override
-	public void setBoard(BoardProxy board) {
-		this.board = board;
-	}
-
 	private int getRandomIndex(int max) {
 		int min = 0;
 		max = max - 1;
 		Random rand = new Random();
 		return rand.nextInt((max - min) + 1) + min;
+	}
+
+	@Override
+	public boolean isInMyPieces(Piece piece) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

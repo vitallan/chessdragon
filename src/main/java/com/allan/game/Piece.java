@@ -3,19 +3,23 @@ package com.allan.game;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allan.set.PlayerSet;
+import com.allan.player.Player;
 import com.allan.set.Position;
 
 public abstract class Piece {
 	
 	private Position position;
-	private int value;
-	private PlayerSet set;
+	private Player player;
 	private int BORDER_LIMIT = 8;
 	private boolean firstMove = true;
 	
 	public abstract String getAbbreviation();
 	public abstract List<Position> getPossibleMoves(Piece[][] board);
+	
+	public Piece(Position position, Player player) {
+		this.position = position;
+		this.player = player;
+	}
 	
 	public boolean getFirstMove() {
 		return this.firstMove;
@@ -23,23 +27,6 @@ public abstract class Piece {
 	
 	public void setFirstMove(boolean firstMove) {
 		this.firstMove = firstMove;
-	}
-	
-	public Piece(int value, PlayerSet set) {
-		this.value = value;
-		this.set = set;
-	}
-	
-	public PlayerSet getPlayerSet() {
-		return this.set;
-	}
-	
-	public void setValue(int value) {
-		this.value = value;
-	}
-	
-	public int getValue() {
-		return this.value;
 	}
 	
 	public void setPosition(Position position) {
@@ -203,11 +190,17 @@ public abstract class Piece {
 	}
 	
 	protected boolean isPositionWithEnemyPiece(int i, int j, Piece[][] board) {
-		return (board[i][j] != null && !this.getPlayerSet().belongsToThisSet(board[i][j]));
+		return (board[i][j] != null && !this.player.isInMyPieces(board[i][j]));
 	}
 	
 	protected boolean isBeyondBorders(int i, int j) {
 		return i < 0 || j < 0 || i > BORDER_LIMIT || j > BORDER_LIMIT;
+	}
+	public Player getPlayer() {
+		return player;
+	}
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 	
 }
