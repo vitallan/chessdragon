@@ -30,6 +30,7 @@ public class Board {
 		
 		this.buildWhiteSet();
 		this.buildBlackSet();
+		
 		playerWhite.setPieces(whiteSet);
 		playerBlack.setPieces(blackSet);
 	}
@@ -88,6 +89,7 @@ public class Board {
 	
 	private List<Piece> createPieces(Position[] position, Player player) {
 		List<Piece> pieces = new ArrayList<Piece>();
+		//how can i refactor this?
 		Piece piece = new King(position[0], player);
 		pieces.add(piece);
 		piece = new Queen(position[1], player);
