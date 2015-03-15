@@ -7,13 +7,7 @@ import com.allan.game.Piece;
 import com.allan.set.Move;
 import com.allan.set.Position;
 
-public class PlayerZero implements Player {
-
-	private List<Piece> set;
-	
-	public void setPieces(List<Piece> set) {
-		this.set = set;
-	}
+public class PlayerZero extends Player {
 
 	public Move move(Piece[][] board) {
 		boolean canMove = false;
@@ -35,12 +29,6 @@ public class PlayerZero implements Player {
 		max = max - 1;
 		Random rand = new Random();
 		return rand.nextInt((max - min) + 1) + min;
-	}
-
-	@Override
-	public boolean isInMyPieces(Piece piece) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }

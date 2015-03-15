@@ -25,14 +25,18 @@ public class Board {
 	
 	public Board(Player playerWhite, Player playerBlack) {
 		realBoard = new Piece[8][8];
+		
 		this.whitePlayer = playerWhite;
 		this.blackPlayer = playerBlack;
 		
 		this.buildWhiteSet();
 		this.buildBlackSet();
 		
-		playerWhite.setPieces(whiteSet);
-		playerBlack.setPieces(blackSet);
+		this.whitePlayer.setPieces(whiteSet);
+		this.blackPlayer.setPieces(blackSet);
+		
+		this.blackPlayer.setMovesUp(true);
+		this.whitePlayer.setMovesUp(false);
 	}
 	
 	public Piece[][] getRealBoard() {
@@ -60,7 +64,7 @@ public class Board {
 		positions[14] = Position.D2;
 		positions[15] = Position.E2;
 		
-		this.whiteSet = createPieces(positions, blackPlayer);
+		this.blackSet = createPieces(positions, blackPlayer);
 	}
 
 	private void buildWhiteSet() {
@@ -140,16 +144,21 @@ public class Board {
 			throw new IllegalMoveException("[ " + piece.getAbbreviation() + " in " + currentPosition + "] Cant go to " + nextPosition );
 		}
 		realBoard[currentPosition.getI()][currentPosition.getJ()] = null;
+		piece.setPosition(nextPosition); 
+		killPiece(nextPosition);
 		piece.setPosition(nextPosition); //just to make sure
-		Piece deadPiece = this.realBoard[nextPosition.getI()][nextPosition.getJ()];
-		if (deadPiece != null) {
-			deadPiece.setPosition(null);
-			deadPiece = null;
-		}
 		this.setPieceInBoard(piece);
 		piece.setFirstMove(false);
 	}
 
+	private void killPiece(Position position) {
+		Piece deadPiece = this.realBoard[position.getI()][position.getJ()];
+		if (deadPiece != null) {
+			deadPiece.setPosition(null);
+			deadPiece = null;
+		}
+	}
+	
 	public void printBoard() {
 		Utils.printBoard(realBoard, whitePlayer); //i send the player just for coloring purposes
 	}

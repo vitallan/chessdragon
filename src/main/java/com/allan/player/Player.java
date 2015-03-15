@@ -6,10 +6,27 @@ import com.allan.game.Piece;
 import com.allan.set.Move;
 
 
-public interface Player {
+public abstract class Player {
 	
-	void setPieces(List<Piece> pieces);
-	Move move(Piece[][] board);
-	boolean isInMyPieces(Piece piece);
+	protected List<Piece> set;
+	private boolean movesUp = false;
+	
+	public abstract Move move(Piece[][] board);
+	
+	public void setPieces(List<Piece> pieces) {
+		this.set = pieces;
+	}
+	
+	public boolean isInMyPieces(Piece piece) {
+		return set.contains(piece);
+	}
+	
+	public void setMovesUp(boolean movesUp) {
+		this.movesUp = movesUp;
+	}
+	
+	public boolean getMovesUp() {
+		return this.movesUp;
+	}
 	
 }

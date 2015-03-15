@@ -13,12 +13,6 @@ public class Pawn extends Piece {
 		super(position, player);
 	}
 	
-	private boolean movesUp;
-
-	public void setMovesUp(boolean movesUp) {
-		this.movesUp = movesUp;
-	}
-
 	@Override
 	public String getAbbreviation() {
 		return "p";
@@ -63,7 +57,7 @@ public class Pawn extends Piece {
 	
 	private int getStepsAhead(int steps) {
 		int i = super.getPosition().getI();
-		if (movesUp) {
+		if (this.getPlayer().getMovesUp()) {
 			return i - steps;
 		} else {
 			return i + steps;
