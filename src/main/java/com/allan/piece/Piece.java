@@ -1,4 +1,4 @@
-package com.allan.game;
+package com.allan.piece;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public abstract class Piece {
 	private boolean firstMove = true;
 	
 	public abstract String getAbbreviation();
-	public abstract List<Position> getPossibleMoves(Piece[][] board);
+	public abstract List<Position> getPossiblePositions(Piece[][] board);
 	
 	public Piece(Position position, Player player) {
 		this.position = position;
@@ -37,11 +37,11 @@ public abstract class Piece {
 		return this.position;
 	}
 	
-	protected int getI() {
+	public int getI() {
 		return this.getPosition().getI();
 	}
 	
-	protected int getJ() {
+	public int getJ() {
 		return this.getPosition().getJ();
 	}
 	
@@ -174,6 +174,8 @@ public abstract class Piece {
 	protected List<Position> filterInvalidPositions(List<Position> uncertainPositions, Piece[][] board) {
 		List<Position> possibleMoves = new ArrayList<Position>();
 		for (Position pos : uncertainPositions) {
+			System.out.println(uncertainPositions);
+			System.out.println(pos);
 			if (pos != null && isThisPositionValid(pos.getI(), pos.getJ(), board)) {
 				possibleMoves.add(pos);
 			}

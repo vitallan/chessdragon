@@ -3,7 +3,6 @@ package com.allan.piece;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.allan.game.Piece;
 import com.allan.player.Player;
 import com.allan.set.Position;
 
@@ -19,7 +18,7 @@ public class Knight extends Piece{
 	}
 
 	@Override
-	public List<Position> getPossibleMoves(Piece[][] board) {
+	public List<Position> getPossiblePositions(Piece[][] board) {
 		int i = super.getPosition().getI();
 		int j = super.getPosition().getJ();
 		

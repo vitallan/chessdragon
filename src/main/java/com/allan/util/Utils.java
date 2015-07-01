@@ -7,7 +7,7 @@ import static org.fusesource.jansi.Ansi.Color.YELLOW;
 
 import org.fusesource.jansi.Ansi.Color;
 
-import com.allan.game.Piece;
+import com.allan.piece.Piece;
 import com.allan.player.Player;
 import com.allan.set.Position;
 
