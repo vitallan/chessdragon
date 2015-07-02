@@ -26,7 +26,7 @@ public class King extends Piece {
 		adjacentMoves.add(Position.getByPosition(i + 1, j)); //down one square
 		adjacentMoves.add(Position.getByPosition(i - 1, j)); //up one square
 		adjacentMoves.add(Position.getByPosition(i, j - 1)); //left one square
-		adjacentMoves.add(Position.getByPosition(i, j - 1)); //right one square
+		adjacentMoves.add(Position.getByPosition(i, j + 1)); //right one square
 		
 		adjacentMoves.add(Position.getByPosition(i - 1, j + 1)); //up-right one square
 		adjacentMoves.add(Position.getByPosition(i - 1, j - 1)); //up-left one square

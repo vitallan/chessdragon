@@ -98,5 +98,5 @@ public enum Position {
 	public int getJ() {
 		return this.j;
 	}
-	
+		
 }
